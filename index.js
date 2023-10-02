@@ -85,6 +85,6 @@ Moralis.start({
   apiKey: process.env.APIKEY,
 }).then(() => {
   app.listen(port, () => {
-    console.log(`Listening to streams`);
+    console.log(`Listening to streams🎉🎉🎉`);
   });
 });
