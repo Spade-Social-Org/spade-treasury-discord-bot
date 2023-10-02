@@ -13,16 +13,24 @@ client.login(process.env.PASS);
 
 app.use(express.json());
 
+Moralis.start({
+  apiKey: process.env.APIKEY,
+}).then(() => {
+  app.listen(port, () => {
+    console.log(`Listening to streams`);
+  });
+});
+
 app.post("/webhook", async (req, res) => {
   const { body, headers } = req;
 
   console.log("request made")
 
   try {
-    // Moralis.Streams.verifySignature({
-    //   body,
-    //   signature: headers["x-signature"],
-    // });
+    Moralis.Streams.verifySignature({
+      body,
+      signature: headers["x-signature"],
+    });
 
 
     let from = body.txs[0].fromAddress;
@@ -36,12 +44,4 @@ app.post("/webhook", async (req, res) => {
     console.log("Not Moralis");
     return res.status(400).json();
   }
-});
-
-Moralis.start({
-  apiKey: process.env.APIKEY,
-}).then(() => {
-  app.listen(port, () => {
-    console.log(`Listening to streams`);
-  });
 });
