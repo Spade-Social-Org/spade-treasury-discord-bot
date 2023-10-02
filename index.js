@@ -4,13 +4,25 @@ const discord = require("discord.js");
 require("dotenv").config();
 const app = express();
 const port = 3000;
-const wallet = "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
 
 const client = new discord.Client({
     intents: [],
   });
 
 client.login(process.env.PASS);
+
+const wallet = "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
+
+const known = [
+  {
+    username: "Spade Treasury",
+    address: "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
+  },
+  {
+    username: "@supreme2580",
+    address: "0xA3Db2Cb625bAe87D12AD769C47791a04BA1e5b29"
+  }
+]
 
 app.use(express.json());
 
@@ -23,14 +35,14 @@ app.post("/webhook/", async (req, res) => {
       signature: headers["x-signature"],
     });
 
+    let fromUser = known.filter(data => data.address === body?.txs[0]?.fromAddress && data.username)
+    let toUser = known.filter(data => data.address === body?.txs[0]?.toAddress && data.username)
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
     const channel = await client.channels.fetch(process.env.CHANNEL);
     channel.send(
-      body?.txs[0]?.fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${body?.txs[0]?.toAddress} 
-      you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
-      `@everyone Spade Treasury received ${amount} Goerli Eth from ${body?.txs[0]?.fromAddress} 
-      you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
+      fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${toUser} you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
+      `@everyone Spade Treasury received ${amount} Goerli Eth from ${fromUser} you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
     );
 
     return res.status(200).json();
@@ -52,12 +64,15 @@ app.get("/webhook/", async (req, res) => {
       signature: headers["x-signature"],
     });
 
-
-    let from = body.txs[0]?.fromAddress;
-    let amount = Number(body.txs[0].value / 1E18) || 0;
+    let fromUser = known.filter(data => data.address === body?.txs[0]?.fromAddress && data.username)
+    let toUser = known.filter(data => data.address === body?.txs[0]?.toAddress && data.username)
+    let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
     const channel = await client.channels.fetch(process.env.CHANNEL);
-    channel.send(`New Donation submitted by ${from}, for ${amount.toFixed(2)} MATIC!!!!`);
+    channel.send(
+      fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${toUser} you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
+      `@everyone Spade Treasury received ${amount} Goerli Eth from ${fromUser} you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
+    );
 
     return res.status(200).json();
   } catch (e) {
