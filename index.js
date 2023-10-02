@@ -19,10 +19,10 @@ app.post("/webhook", async (req, res) => {
   console.log("request made")
 
   try {
-    Moralis.Streams.verifySignature({
-      body,
-      signature: headers["x-signature"],
-    });
+    // Moralis.Streams.verifySignature({
+    //   body,
+    //   signature: headers["x-signature"],
+    // });
 
 
     let from = body.txs[0].fromAddress;
