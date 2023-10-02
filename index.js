@@ -13,7 +13,7 @@ client.login(process.env.PASS);
 
 app.use(express.json());
 
-app.post("/webhook", async (req, res) => {
+app.post("/webhook/", async (req, res) => {
   const { body, headers } = req;
 
   console.log("request: ", body)
