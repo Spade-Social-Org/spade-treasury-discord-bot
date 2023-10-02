@@ -22,6 +22,8 @@ app.post("/webhook/", async (req, res) => {
       signature: headers["x-signature"],
     });
 
+    console.log("body: ", body)
+
 
     let from = body.txs[0]?.fromAddress;
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
