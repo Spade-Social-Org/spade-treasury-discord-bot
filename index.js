@@ -4,6 +4,7 @@ const discord = require("discord.js");
 require("dotenv").config();
 const app = express();
 const port = 3000;
+const wallet = "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
 
 const client = new discord.Client({
     intents: [],
@@ -22,14 +23,14 @@ app.post("/webhook/", async (req, res) => {
       signature: headers["x-signature"],
     });
 
-    console.log("body: ", body)
-
-
-    let from = body.txs[0]?.fromAddress;
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
     const channel = await client.channels.fetch(process.env.CHANNEL);
-    channel.send(`New Donation submitted by ${from}, for ${amount.toFixed(2)} MATIC!!!!`);
+    channel.send(
+      body?.txs[0]?.fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${body?.txs[0]?.toAddress} 
+      you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
+      `@everyone Spade Treasury received ${amount} Goerli Eth from ${body?.txs[0]?.fromAddress}`
+    );
 
     return res.status(200).json();
   } catch (e) {
