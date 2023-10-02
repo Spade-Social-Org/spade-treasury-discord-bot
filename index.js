@@ -17,16 +17,6 @@ const wallet = "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
 
 const chain = EvmChain.GOERLI
 
-const balanceResponse = await Moralis.EvmApi.token.getWalletTokenBalances({
-  wallet,
-  chain,
-});
-
-const balance = balanceResponse.toJSON()?.balance
-const symbol = balanceResponse.toJSON()?.symbol
-
-console.log(balance, symbol)
-
 const known = [
   {
     user_id: "1158228529746554912",
@@ -42,6 +32,16 @@ app.use(express.json());
 
 app.post("/webhook/", async (req, res) => {
   const { body, headers } = req;
+  
+  const balanceResponse = await Moralis.EvmApi.token.getWalletTokenBalances({
+    wallet,
+    chain,
+  });
+  
+  const balance = balanceResponse.toJSON()?.balance
+  const symbol = balanceResponse.toJSON()?.symbol
+  
+  console.log(balance, symbol)
 
   try {
     Moralis.Streams.verifySignature({
