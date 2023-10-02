@@ -15,11 +15,11 @@ const wallet = "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
 
 const known = [
   {
-    username: "Spade Treasury",
+    user_id: "1158228529746554912",
     address: "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
   },
   {
-    username: "supreme2580",
+    user_id: "919141293878280203",
     address: "0xA3Db2Cb625bAe87D12AD769C47791a04BA1e5b29"
   }
 ]
@@ -41,18 +41,18 @@ app.post("/webhook/", async (req, res) => {
     const fromUserObject = known.find(data => data.address.toLowerCase() === fromAddress);
     const toUserObject = known.find(data => data.address.toLowerCase() === toAddress);
 
-    const fromUser = fromUserObject ? fromUserObject.username : fromAddress;
-    const toUser = toUserObject ? toUserObject.username : toAddress;
+    const fromUser = fromUserObject ? fromUserObject.user_id : fromAddress;
+    const toUser = toUserObject ? toUserObject.user_id : toAddress;
 
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
-    console.log(fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to @${toUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
-    `@everyone Spade Treasury received ${amount} Goerli Eth from @${fromUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`)
+    console.log(fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to <@${toUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
+    `@everyone Spade Treasury received ${amount} Goerli Eth from <@${fromUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`)
 
     const channel = await client.channels.fetch(process.env.CHANNEL);
     channel.send(
-      fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to @${toUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
-      `@everyone Spade Treasury received ${amount} Goerli Eth from @${fromUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
+      fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to <@${toUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
+      `@everyone Spade Treasury received ${amount} Goerli Eth from <@${fromUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
     );
 
     return res.status(200).json();
