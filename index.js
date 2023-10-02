@@ -29,7 +29,8 @@ app.post("/webhook/", async (req, res) => {
     channel.send(
       body?.txs[0]?.fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${body?.txs[0]?.toAddress} 
       you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
-      `@everyone Spade Treasury received ${amount} Goerli Eth from ${body?.txs[0]?.fromAddress}`
+      `@everyone Spade Treasury received ${amount} Goerli Eth from ${body?.txs[0]?.fromAddress} 
+      you can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
     );
 
     return res.status(200).json();
