@@ -39,6 +39,32 @@ app.post("/webhook/", async (req, res) => {
   }
 });
 
+app.get("/webhook/", async (req, res) => {
+  const { body, headers } = req;
+
+  console.log("request: ", body)
+  console.log("response: ", res)
+
+  try {
+    Moralis.Streams.verifySignature({
+      body,
+      signature: headers["x-signature"],
+    });
+
+
+    let from = body.txs[0].fromAddress;
+    let amount = Number(body.txs[0].value / 1E18);
+
+    const channel = await client.channels.fetch(process.env.CHANNEL);
+    channel.send(`New Donation submitted by ${from}, for ${amount.toFixed(2)} MATIC!!!!`);
+
+    return res.status(200).json();
+  } catch (e) {
+    console.log("Not Moralis");
+    return res.status(400).json();
+  }
+});
+
 Moralis.start({
   apiKey: process.env.APIKEY,
 }).then(() => {
