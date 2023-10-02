@@ -26,8 +26,8 @@ app.post("/webhook/", async (req, res) => {
     let from = body.txs[0]?.fromAddress;
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
-    const channel = await client.channels.fetch(process.env.CHANNEL);
-    channel.send(`New Donation submitted by ${from}, for ${amount.toFixed(2)} MATIC!!!!`);
+    // const channel = await client.channels.fetch(process.env.CHANNEL);
+    // channel.send(`New Donation submitted by ${from}, for ${amount.toFixed(2)} MATIC!!!!`);
 
     return res.status(200).json();
   } catch (e) {
@@ -52,8 +52,8 @@ app.get("/webhook/", async (req, res) => {
     let from = body.txs[0]?.fromAddress;
     let amount = Number(body.txs[0].value / 1E18) || 0;
 
-    const channel = await client.channels.fetch(process.env.CHANNEL);
-    channel.send(`New Donation submitted by ${from}, for ${amount.toFixed(2)} MATIC!!!!`);
+    // const channel = await client.channels.fetch(process.env.CHANNEL);
+    // channel.send(`New Donation submitted by ${from}, for ${amount.toFixed(2)} MATIC!!!!`);
 
     return res.status(200).json();
   } catch (e) {
