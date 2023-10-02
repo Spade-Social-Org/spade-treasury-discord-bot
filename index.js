@@ -16,9 +16,6 @@ app.use(express.json());
 app.post("/webhook/", async (req, res) => {
   const { body, headers } = req;
 
-  console.log("request: ", body)
-  console.log("response: ", res)
-
   try {
     Moralis.Streams.verifySignature({
       body,
@@ -34,7 +31,7 @@ app.post("/webhook/", async (req, res) => {
 
     return res.status(200).json();
   } catch (e) {
-    console.log("Not Moralis");
+    console.log(e);
     return res.status(400).json();
   }
 });
@@ -60,7 +57,7 @@ app.get("/webhook/", async (req, res) => {
 
     return res.status(200).json();
   } catch (e) {
-    console.log("Not Moralis");
+    console.log(e);
     return res.status(400).json();
   }
 });
