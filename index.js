@@ -35,8 +35,15 @@ app.post("/webhook/", async (req, res) => {
       signature: headers["x-signature"],
     });
 
-    let fromUser = known.filter(data => data.address === body?.txs[0]?.fromAddress && data.username)
-    let toUser = known.filter(data => data.address === body?.txs[0]?.toAddress && data.username)
+    const fromAddress = body?.txs[0]?.fromAddress;
+    const toAddress = body?.txs[0]?.toAddress;
+
+    const fromUserObject = known.find(data => data.address === fromAddress);
+    const toUserObject = known.find(data => data.address === toAddress);
+
+    const fromUser = fromUserObject ? fromUserObject.username : fromAddress;
+    const toUser = toUserObject ? toUserObject.username : toAddress;
+
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
     console.log(fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${toUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
@@ -47,7 +54,7 @@ app.post("/webhook/", async (req, res) => {
       fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${toUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
       `@everyone Spade Treasury received ${amount} Goerli Eth from ${fromUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
     );
-    
+
     return res.status(200).json();
   } catch (e) {
     console.log(e);
@@ -64,8 +71,15 @@ app.get("/webhook/", async (req, res) => {
       signature: headers["x-signature"],
     });
 
-    let fromUser = known.filter(data => data.address === body?.txs[0]?.fromAddress && data.username)
-    let toUser = known.filter(data => data.address === body?.txs[0]?.toAddress && data.username)
+    const fromAddress = body?.txs[0]?.fromAddress;
+    const toAddress = body?.txs[0]?.toAddress;
+
+    const fromUserObject = known.find(data => data.address === fromAddress);
+    const toUserObject = known.find(data => data.address === toAddress);
+
+    const fromUser = fromUserObject ? fromUserObject.username : fromAddress;
+    const toUser = toUserObject ? toUserObject.username : toAddress;
+    
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
     console.log(fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${toUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
