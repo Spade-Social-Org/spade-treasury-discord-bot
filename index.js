@@ -13,8 +13,6 @@ client.login(process.env.PASS);
 
 const wallet = "0x24769Cfb25b71A94073613095a901A03B6fB3B49"
 
-const chain = EvmChain.GOERLI
-
 const known = [
   {
     user_id: "1158228529746554912",
