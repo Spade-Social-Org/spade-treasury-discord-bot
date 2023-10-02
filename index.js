@@ -25,6 +25,8 @@ const balanceResponse = await Moralis.EvmApi.token.getWalletTokenBalances({
 const balance = balanceResponse.toJSON()?.balance
 const symbol = balanceResponse.toJSON()?.symbol
 
+console.log(balance, symbol)
+
 const known = [
   {
     user_id: "1158228529746554912",
