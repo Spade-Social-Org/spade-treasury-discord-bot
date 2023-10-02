@@ -41,18 +41,18 @@ app.post("/webhook/", async (req, res) => {
     const fromUserObject = known.find(data => data.address.toLowerCase() === fromAddress);
     const toUserObject = known.find(data => data.address.toLowerCase() === toAddress);
 
-    const fromUser = fromUserObject ? fromUserObject.user_id : fromAddress;
-    const toUser = toUserObject ? toUserObject.user_id : toAddress;
+    const fromUser = fromUserObject ? `<@${fromUserObject.user_id }>`: fromAddress;
+    const toUser = toUserObject ? `<@${toUserObject.user_id }>` : toAddress;
 
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
-    console.log(fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to <@${toUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
-    `@everyone Spade Treasury received ${amount} Goerli Eth from <@${fromUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`)
+    console.log(fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${toUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
+    `@everyone Spade Treasury received ${amount} Goerli Eth from ${fromUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`)
 
     const channel = await client.channels.fetch(process.env.CHANNEL);
     channel.send(
-      fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to <@${toUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
-      `@everyone Spade Treasury received ${amount} Goerli Eth from <@${fromUser}>🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
+      fromAddress === wallet ? `@everyone Spade Treasury sent ${amount} Goerli Eth to ${toUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}` : 
+      `@everyone Spade Treasury received ${amount} Goerli Eth from ${fromUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
     );
 
     return res.status(200).json();
