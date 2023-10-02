@@ -13,14 +13,6 @@ client.login(process.env.PASS);
 
 app.use(express.json());
 
-Moralis.start({
-  apiKey: process.env.APIKEY,
-}).then(() => {
-  app.listen(port, () => {
-    console.log(`Listening to streams`);
-  });
-});
-
 app.post("/webhook", async (req, res) => {
   const { body, headers } = req;
 
@@ -44,4 +36,12 @@ app.post("/webhook", async (req, res) => {
     console.log("Not Moralis");
     return res.status(400).json();
   }
+});
+
+Moralis.start({
+  apiKey: process.env.APIKEY,
+}).then(() => {
+  app.listen(port, () => {
+    console.log(`Listening to streams`);
+  });
 });
