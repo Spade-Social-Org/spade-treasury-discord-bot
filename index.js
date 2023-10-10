@@ -21,6 +21,10 @@ const known = [
   {
     user_id: "919141293878280203",
     address: "0xA3Db2Cb625bAe87D12AD769C47791a04BA1e5b29"
+  },
+  {
+    user_id: "766599656863563797",
+    address: "0x67A3BEE6d619fCba630b83DCA445F8600e7762dE"
   }
 ]
 
