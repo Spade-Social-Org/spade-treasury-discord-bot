@@ -51,8 +51,8 @@ app.post("/webhook/", async (req, res) => {
     let amount = Number(body.txs[0]?.value / 1E18) || 0;
 
     const channel = await client.channels.fetch(process.env.CHANNEL);
-    channel.send(`@everyone Spade Treasury ${fromAddress.toLowerCase() === wallet.toLowerCase() ? "sent" : "received"} ${amount} Goerli Eth 
-      ${fromAddress.toLowerCase() === wallet.toLowerCase() ? "to" : "from"} ${fromAddress.toLowerCase() === 
+    channel.send(`@everyone Spade Treasury ${fromAddress.toLowerCase() === wallet.toLowerCase() ? "sent" : 
+    "received"} ${amount} Goerli Eth ${fromAddress.toLowerCase() === wallet.toLowerCase() ? "to" : "from"} ${fromAddress.toLowerCase() === 
       wallet.toLowerCase() ? toUser : fromUser}🎉🎉🎉. You can confirm this transaction on https://goerli.etherscan.io/tx/${body?.txs[0]?.hash}`
     );
 
